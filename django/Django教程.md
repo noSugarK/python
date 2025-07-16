@@ -316,7 +316,31 @@ def profile(request):
 
 #### with标签
 
+在模板中定义变量。可以将复杂的变量缓存到一个变量上，后面可以直接使用这个变量。
 
+```python
+context = [
+	"person" : ["张三", "李四"]
+]
+
+{% with lisi=person.1 %}
+	<p>{{ lisi }}</p>
+{% endwith %}
+```
+
+**tips：**
+
+- with语句中定义的变量只能在{%with%}...{%wndwith%}中使用，无法在标签外使用。
+
+- 定义变量时不能在等号两边留有空格。
+
+- 也可以使用`with ... as ...`进行赋值
+
+  ```python
+  {% with person.1 as lisi %}
+  	<p>{{ lisi }}</p>
+  {% endwith %}
+  ```
 
 #### url标签
 
