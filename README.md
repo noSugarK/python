@@ -35,14 +35,15 @@ django > 5.0
 
 ### 模版
 
-- [模版介绍](django/Django教程.md#模版介绍)
-  - [模版渲染](django/Django教程.md#模版渲染)
-  - [模板查找路径配置](django/Django教程.md#模板查找路径配置)
+#### [模版介绍](django/Django教程.md#模版介绍)
+- [模版渲染](django/Django教程.md#模版渲染)
+- [模板查找路径配置](django/Django教程.md#模板查找路径配置)
 
-- [DTL模版语法](django/Django教程.md#DTL模版语法)
-  - [变量](django/Django教程.md#变量)
-  - [常用标签](django/Django教程.md#常用标签)
-    1. [if标签](django/Django教程.md#if标签)
-    2. [for标签](django/Django教程.md#for标签)
-    3. [with标签](django/Django教程.md#with标签)
-    4. [url标签](django/Django教程.md#url标签)
+#### [DTL模版语法](django/Django教程.md#DTL模版语法)
+
+| 标签                                          | 内容                                                         |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| [变量](django/Django教程.md#变量)             |                                                              |
+| [常用标签](django/Django教程.md#常用标签)     | [if标签](django/Django教程.md#if标签)<br>[for标签](django/Django教程.md#for标签)<br>[with标签](django/Django教程.md#with标签)<br>[url标签](django/Django教程.md#url标签)<br> |
+| [常用过滤器](django/Django教程.md#常用过滤器) | [add](django/Django教程.md#add) [cut](django/Django教程.md#cut) [default](django/Django教程.md#default) [default_if_none](django/Django教程.md#default_if_none) [date](django/Django教程.md#date) <br>[first](django/Django教程.md#first) [last](django/Django教程.md#last) [length](django/Django教程.md#length) [lower](django/Django教程.md#lower) [upper](django/Django教程.md#upper) <br>[join](django/Django教程.md#join) [floatformat](django/Django教程.md#floatformat) [random](django/Django教程.md#random) [slice](django/Django教程.md#slice) [safe](django/Django教程.md#safe)<br> [striptags](django/Django教程.md#striptags) [truncatechars](django/Django教程.md#truncatechars) [truncatechars_html](django/Django教程.md#truncatechars_html)<br> |
+

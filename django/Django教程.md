@@ -60,7 +60,13 @@ scheme://host:port/path/?query-string=xxx#anchor
 python manage.py runserver
 ```
 
-运行之后在`http://127.0.0.1:8000/`可以访问网站，若需要修改端口号可以在运行的时候指定端口号：`python manage.py runserver 9000`。另外这样运行的项目只能在本机上访问，如果想要在其他电脑上访问本网站，那么需要指定ip地址为0.0.0.0，示例：`python manage.py runserver 0.0.0.0:8000`。
+运行之后在`http://127.0.0.1:8000/`可以访问网站，若需要修改端口号可以在运行的时候指定端口号：`python manage.py runserver 9000`。
+
+另外这样运行的项目只能在本机上访问，如果想要在其他电脑上访问本网站，那么需要指定ip地址为0.0.0.0，示例：
+
+```bash
+python manage.py runserver 0.0.0.0:8000
+```
 
 ### pycharm方式
 
@@ -344,5 +350,245 @@ context = [
 
 #### url标签
 
+在模版中，我们经常要写一些url，比如某个a标签中需要定义`href`属性。当然如果通过硬编码的方式直接将这个url写死在里面也是可以的。但是这样对于以后项目维护可能不是一件好事。因此建议使用这种反转的方式来实现，类似于`django`中的`reverse`一样。示例代码如下:
+
+```html
+<a href="{% url 'book:list' %}">图书列表页面</a>
+```
+
+如果url反转的时候需要传递参数，那么可以在后面传递。但是参数分位置参数和关键字参数。位置参数和关键字参数不能同时使用。示例代码如下：
+
+```python
+# path部分
+path('detail/<book_id>/',views.book_detail,name='detail')
+
+#url反转，使用位置参数
+<a href="{%url 'book:detail' 1 %}">图书详情页面</a>
+
+#url反转，使用关键字参数
+<a href="{% url 'book:detail' book_id=1 %}">图书详情页面</a>
+```
+
+如果想要在使用ur标签反转的时候要传递查询字符串的参数，那么必须要手动在后面添加。示例代码如下：
+
+```html
+<a href="{% url 'book:detail' book_id=1 %}?page=1">图书详情页面</a>
+```
+
+如果需要传递多个参数，那么通过空格的方式进行分隔。示例代码如下：
+
+```html
+<a href="{% url 'book:detail' book_id=1 page=2 %}">图书详情页面</a>
+```
+
+### 常用过滤器
+
+在模板中，有时候需要对一些数据进行处理以后才能使用。一般在Python中是通过函数的形式来完成的。而在模板中，则是通过过滤器来实现的。过滤器的使用则是通过`|`来使用。
+
+#### add
+
+将传进来的参数添加到原来的值上面。这个过滤器会尝试将值和参数转换成整形然后进行相加。如果转换成整形过程中失败了，那么会将值和参数进行拼接。如果是字符串，那么会拼接成字符串，如果是列表，那么会拼接成一个列表。示例代码如下：
+
+```python
+{{ value|add:'2' }}
+```
+
+如果value是等于4，那么结果将是6。如果value是等于一个普通的字符串，比如abc，那么结果将是abc2。add过滤器的源代码如下：
+
+```python
+def add(value, arg):
+    try:
+        return int(value) + int(arg)
+    except (valueError, TypeError):
+        try:
+            return value + arg
+        except Exception:
+        	return ''
+```
+
+#### cut
+
+移除值中所有指定的字符串。如下示例是移除value中所有的空格：
+
+```python
+{{ value | cut:' ' }}
+```
+
+#### date
+
+将一个日期按照指定的格式，格式化字符串。
+
+```python
+context = [
+    'nowTime' : datetime.now()
+]
+
+当前时间{{ nowTime | date:"Y年m月d日" }}
+```
+
+| 格式字符串 | 描述                    | 显示范围  |
+| ---------- | ----------------------- | --------- |
+| Y          | 年，四位数              | 1949~9999 |
+| m          | 月，两位数              | 01~12     |
+| n          | 月，无前缀0             | 1~12      |
+| d          | 天，两位数              | 01~31     |
+| j          | 天，无前缀0             | 1~31      |
+| g          | 小时，12小时制，无前缀0 | 0~11      |
+| h          | 小时，12小时制，两位数  | 00~11     |
+| G          | 小时，24小时制，无前缀0 | 0~23      |
+| H          | 小时，24小时制，两位数  | 00~23     |
+| i          | 分钟，两位数            | 00~59     |
+| s          | 秒，两位数              | 00~59     |
+
+#### default
+
+如果值被评估为False。比如`[]`，`""`，`None`，`{}`等这些在if判断中为`False`的值，都会使用`default`过滤器提供的默认值。示例代码如下：
+
+```python
+{{ value | default:"nothing" }}
+```
+
+如果value是等于一个空的字符串。比如`""`，那么以上代码将会输出`nothing`。
 
 
+#### deault_if_none
+
+如果值是`None`，那么将会使用`default_if_none`提供的默认值。这个和`default`有区别，`default`是所有被评估为`False`的都会使用默认值。而`default_if_none`则只有这个值是等于`None`的时候才会使用默认值。示例代码如下：
+
+```python
+{{ value | default_if_none:"nothing" }}
+```
+
+如果value是等于`""`也即空字符串，那么以上会输出空字符串。如果value是一个`None`值，以上代码才会输出`nothing`。
+
+#### first
+
+返回列表/元组/字符串中的第一个元素。
+
+```python
+{{ value | first }}
+```
+
+#### last
+
+返回列表/元组/字符串中的最后一个元素。
+
+```python
+{{ value | last }}
+```
+
+| value         | first输出 | last输出 |
+| ------------- | --------- | -------- |
+| ['a','b','c'] | a         | c        |
+| abc           | a         | c        |
+| ('a','b','c') | a         | c        |
+
+#### length
+
+获取列表/元组/字典/字符串的长度。
+
+```python
+{{ value | length }}
+```
+
+#### lower
+
+将值中的所有字符转换成小写。
+
+```python
+{{ value | lower }}
+```
+
+#### upper
+
+将值中的所有字符转换成大写。
+
+```python
+{{ value | upper }}
+```
+
+#### join
+
+将列表/元组/字符串用指定字符进行拼接。
+
+```python
+{{ value | join:'/' }}
+```
+
+#### floatformat
+
+使用四舍五入的方式格式化一个浮点类型。如果这个过滤器没有传递任何参数。那么只会在小数点后保留一个小数，如果小数后面全是0，那么只会保留整数。当然也可以传递一个参数，标识具体要保留几个小数。
+
+##### 如果没有传递参数：
+
+|value      | 模版代码                       |输出|
+|-----------|----------------------------|----|
+|34.23234   | {{ value \| floatformat }} |34.2|
+|34.000     | {{ value \| floatformat }} |34|
+|34.260     | {{ value \| floatformat }} |34.3|
+
+##### 如果传递参数：
+
+|value | 模版代码                         |输出|
+|------|------------------------------|----|
+|34.23234| {{ value \| floatformat:3 }} |34.232|
+|34.0000 | {{ value \| floatformat:3 }} |34.000|
+|34.26000| {{ value \| floatformat:3 }} |34.260|
+
+#### random
+
+在被给的列表/元组/字符串中随机的选择一个值。
+
+```python
+{{ value | random }}
+```
+
+#### slice
+
+类似于Python中的切片操作。
+
+```python
+{{ some_list | slice:"2" }}
+```
+
+以上代码将会给some_list从2开始做切片操作。
+
+#### safe
+
+标记一个字符串是安全的。也级会关掉这个字符串的自动转义。
+
+```python
+{{ value | safe }}
+```
+
+如果value是一个不包含任何特殊字符的字符串，比如`<a>`这种，那么以上代码就会把字符串正常的输入。如果value是一串`html`代码，那么以上代码将会把这个html代码渲染到浏览器中。
+
+#### striptags
+
+删除字符串中所有的html标签。
+
+```python
+{{ value | striptags }}
+```
+
+如果是`<strong>hello world</strong>`，则会输出`hello world`。
+
+#### truncatechars
+
+如果给定的字符串长度超过了过滤器指定长度。那么就会进行切割，并且会拼接三个点来作为省略号。
+
+```python
+{{ value | truncatechars:"5" }}
+```
+
+如果value是"北京欢迎您~"，那么输出结果是"北京欢迎..."。省略号占一个字符。
+
+#### truncatechars_html
+
+类似于truncatechars，只不过不会切割html标签。
+
+```python
+{{ value | truncatechars_html:5 }}
+```
+
+如果value是`<p>北京欢迎您~</p>`，那么输出是`<p>北京欢迎···</p>`。
