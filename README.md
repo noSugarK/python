@@ -46,4 +46,5 @@ django > 5.0
 | [变量](django/Django教程.md#变量)             |                                                              |
 | [常用标签](django/Django教程.md#常用标签)     | [if标签](django/Django教程.md#if标签)<br>[for标签](django/Django教程.md#for标签)<br>[with标签](django/Django教程.md#with标签)<br>[url标签](django/Django教程.md#url标签)<br> |
 | [常用过滤器](django/Django教程.md#常用过滤器) | [add](django/Django教程.md#add) [cut](django/Django教程.md#cut) [default](django/Django教程.md#default) [default_if_none](django/Django教程.md#default_if_none) [date](django/Django教程.md#date) <br>[first](django/Django教程.md#first) [last](django/Django教程.md#last) [length](django/Django教程.md#length) [lower](django/Django教程.md#lower) [upper](django/Django教程.md#upper) <br>[join](django/Django教程.md#join) [floatformat](django/Django教程.md#floatformat) [random](django/Django教程.md#random) [slice](django/Django教程.md#slice) [safe](django/Django教程.md#safe)<br> [striptags](django/Django教程.md#striptags) [truncatechars](django/Django教程.md#truncatechars) [truncatechars_html](django/Django教程.md#truncatechars_html)<br> |
+| [模板结构](django/Django教程.md#模板结构)     | [include模板](django/Django教程.md#include模板)<br>[模板继承](django/Django教程.md#模板继承)<br> |
 
