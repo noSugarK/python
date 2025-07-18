@@ -1152,3 +1152,68 @@ class Book(models.Model):
 详见官方文档：https://docs.djangoproject.com/zh-hans/5.0/ref/models/options/
 
 ## 外键和表关系
+
+### 外键
+
+在MySQL中，表有两种引l擎，一种是`InnoDB`，另外一种是`myisam`。如果使用的是`InnoDB`引擎，是支持外键约束的。外键的存在使得`ORM`框架在处理表关系的时候异常的强大。因此这里我们首先来介绍下外键在`Django`中的使用。
+
+类定义为`class Foreignkey(to，on_delete，**options)`。第一个参数是引l用的是哪个模型，第二个参数是在使用外键引用的模型数据被删除了，这个字段该如何处理，比如有`CASCADE、SET_NULL`等。这里以一个实际案例来说明。比如有一个User和一个Article两个模型。一个User可以发表多篇文章，一个Article只能有一个Author，并且通过外键进行引用。那么相关的示例代码如下：
+
+```python
+class User(models.Model):
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=100)
+    
+class Article(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+
+    # author_id foreign key(user.id)
+    author = models.ForeignKey("User",on_delete=models.CASCADE)
+```
+
+如果说模型不在同一app中，使用`app名称.模型名称`进行引用
+
+```python
+# User模型在user app中
+class User(models.Model):
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=100)
+    
+# Article模型在article app中
+class Article(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+
+    # author_id foreign key(user.id)
+    author = models.ForeignKey("user.User",on_delete=models.CASCADE)
+```
+
+如果模型的外键引l用的是本身自己这个模型，那么to参数可以为'se1f'，或者是这个模型的名字。在论坛开发
+中，一般评论都可以进行二级评论，即可以针对另外一个评论进行评论，那么在定义模型的时候就需要使用外键来
+引用自身。示例代码如下：
+
+```python
+class Comment(models.Model):
+	content = models.TextField()
+	origin_comment = models.ForeignKey('self',on_delete=models.CAScADE,null=True)
+
+# 或者
+#origin_comment=models.ForeignKey('Comment',on_delete=models.CASCADE,null=True)
+```
+
+### 外键删除操作
+
+如果一个模型使用了外键。那么在对方那个模型被删掉后，该进行什么样的操作。可以通过on_delete来指定。可以指定的类型如下：
+
+| 类型          | 解释                                                                                                   |
+|-------------|------------------------------------------------------------------------------------------------------|
+| CASCADE     | 级联操作。如果外键对应的那条数据被删除了，那么这条数据也会被删除。                                                                    |
+| PROTECT     | 受保护。即只要这条数据引I用了外键的那条数据，那么就不能删除外键的那条数据。                                                               |
+| SET_NULL    | 设置为空。如果外键的那条数据被删除了，那么在本条数据上就将这个字段设置为空。如果设置这个选项，前提是要指定这个字段可以为空。                                       |
+| SET_DEFAULT | 设置默认值。如果外键的那条数据被删除了，那么本条数据上就将这个字段设置为默认值。如果设置这个选项，前提是要指定这个字段一个默认值。                                    |
+| SETO        | 如果外键的那条数据被删除了。那么将会获取SET函数中的值来作为这个外键的值。SET函数可以接收一个可以调用的对象（比如函数或者方法），如果是可以调用的对象，那么会将这个对象调用后的结果作为值返回回去。 |
+| DO_NOTHING  | 不采取任何行为。一切全看数据库级别的约束。                                                                                |
+
+**以上这些选项只是Django级别的，数据级别依旧是RESTRICT！**
+
