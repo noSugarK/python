@@ -48,3 +48,18 @@ django > 5.0
 | [常用过滤器](django/Django教程.md#常用过滤器) | [add](django/Django教程.md#add) [cut](django/Django教程.md#cut) [default](django/Django教程.md#default) [default_if_none](django/Django教程.md#default_if_none) [date](django/Django教程.md#date) <br>[first](django/Django教程.md#first) [last](django/Django教程.md#last) [length](django/Django教程.md#length) [lower](django/Django教程.md#lower) [upper](django/Django教程.md#upper) <br>[join](django/Django教程.md#join) [floatformat](django/Django教程.md#floatformat) [random](django/Django教程.md#random) [slice](django/Django教程.md#slice) [safe](django/Django教程.md#safe)<br> [striptags](django/Django教程.md#striptags) [truncatechars](django/Django教程.md#truncatechars) [truncatechars_html](django/Django教程.md#truncatechars_html)<br> |
 | [模板结构](django/Django教程.md#模板结构)     | [include模板](django/Django教程.md#include模板)<br>[模板继承](django/Django教程.md#模板继承)<br> |
 
+### 数据库
+
+mysql > 8.0.21
+
+驱动：pymysql
+
+#### [数据库操作](django/Django教程.md#数据库操作)
+
+[数据库配置](django/Django教程.md#在settingspy中配置)
+[获取数据库信息](django/Django教程.md#在app中获取数据库信息)
+
+#### [ORM模型](django/Django教程.md#ORM模型)
+
+[创建ORM模型](django/Django教程.md#创建ORM模型)
+[数据库迁移](django/Django教程.md#映射模型到数据库中)

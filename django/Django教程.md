@@ -878,7 +878,7 @@ pymysql.install_as_MySQLdb()
 
 重新新建app即可
 
-#### 在app中
+#### 在app中获取数据库信息
 
 > book/views.py
 
@@ -935,4 +935,42 @@ PythonDBAPI下规范下cursor对象常用接口：
 6. fetchmany(size)：在执行查询操作以后，获取多条数据。具体是多少条要看传的size参数。如果不传size参数，那么默认是获取第一条数据。
 
 7. fetchall：获取所有满足sql语句的数据。
+
+## ORM模型
+
+### 创建ORM模型
+
+在app的model.py文件中创建模型
+
+> book/model.py
+
+```python
+from django.db import models
+
+class Book(models.Model):
+    name = models.CharField(max_length=100)
+    author = models.CharField(max_length=20)
+    price = models.FloatField(default=0.0)
+    publish_date = models.DateTimeField(auto_now=True)
+```
+
+### 映射模型到数据库中
+
+1. 在settings.py中，配置好DATABASES，做好数据库相关的配置。
+
+2. 在app中的models.py中定义好模型，这个模型必须继承自django.db.models。
+
+3. 将这个app添加到settings.py的INSTALLED_APP中。
+
+4. 生成迁移脚本
+
+   ```
+   python manage.py makemigrations
+   ```
+
+5. 将迁移脚本文件映射到数据库中
+
+   ```
+   python manage.py migrate
+   ```
 
