@@ -974,3 +974,181 @@ class Book(models.Model):
    python manage.py migrate
    ```
 
+### ORM实现基本CRUD操作
+
+#### 添加一个模型到数
+首先需要创建一个模型。创建方法和创建普通python对象是一样的。在创建完模型后需要调用模型的save方法，这样Django会自动将这个模型转换成sql语句，然后存储到数据库中。
+
+```python
+class Book(models.Model):
+    name = models.CharField(max_length=100)
+    author = models.CharField(max_length=20)
+    price = models.FloatField(default=0.0)
+    publish_date = models.DateTimeField(auto_now_add=True)
+```
+
+```python
+from django.http import HttpResponse
+from .models import Book
+
+def add_book(request):
+    book = Book(author='罗贯中', name='三国演义', price=99.9)
+    book.save()
+    return HttpResponse('添加成功')
+```
+
+#### 查找数据
+
+查找数据都是通过模型下的objects对象来实现的。
+
+##### 查找所有数据
+
+查找Book这个模型对应的表下的所有数据。
+
+```python
+books = Book.objects.all()
+```
+
+##### 数据过滤
+
+在查找数据的时候，可以通过调用objects的filter方法进行数据过滤。
+
+```python
+books = Book.objects.filter(name="三国演义")
+
+#多条件
+books = Book.objects.filter(name="三国演义",desc='test')
+```
+
+调用filter，会将所有满足条件的模型对象都返回。
+
+##### 获取单个对象
+
+如果只需要返回第一个满足条件的对象，可以使用get方法。
+
+```python
+def book_info(request, book_id):
+    try:
+        book = Book.objects.get(id=book_id)
+    except Book.DoesNotExist:
+        return HttpResponse('图书不存在')
+
+    context = {
+        'book': book
+    }
+    return render(request, 'book_info.html', context=context)
+```
+
+如果没有找到满足条件的对象会抛出一个异常，而filter则是返回一个空列表。
+
+#### 数据排序
+
+如果想在查找数据的时候使用某个字段来进行排序，可以使用order_by方法来实现。
+
+```python
+books = Book.objects.order_by('publish_date')
+```
+
+如果需要从大到小排序
+
+```python
+books = Book.objects.order_by('-publish_date')
+```
+
+#### 修改数据
+
+```python
+def update_book(request):
+    book = Book.objects.get(id=1)
+    book.name = '西游记'
+    book.price = 99.9
+    book.save()
+    return HttpResponse('更新成功')
+```
+
+#### 删除数据
+
+查找到数据即可调用delete方法进行删除
+
+```python
+def delete_book(request):
+    book = Book.objects.get(id=1)
+    book.delete()
+    return HttpResponse('删除成功')
+```
+
+## 常用Field和参数
+
+### 数据库表字段类型
+
+| 字段类型                  | 字段解释                                                     |
+| ------------------------- | ------------------------------------------------------------ |
+| AutoField                 | 自增整数                                                     |
+| BigAutoField              | 长自增型整数                                                 |
+| BooleanField              | 布尔类型                                                     |
+| CharField                 | 必须要传递max_length这个关键字参数进去                       |
+| DateField                 | 日期类型。使用这个Field可以传递以下几个参数：<br>auto_now<br> auto_now_add<br> |
+| DateTimeField             | 日期时间类型                                                 |
+| TimeField                 | 时间类型                                                     |
+| EmailField                | 邮箱类型                                                     |
+| FileField                 | 文件类型                                                     |
+| ImageField                | 图片类型                                                     |
+| FloatField                | 浮点数类型                                                   |
+| IntegerField              | 整型                                                         |
+| BigIntegerField           | 大整型                                                       |
+| PositiveIntegerField      | 正整型                                                       |
+| SmallIntegerField         | 小整型                                                       |
+| PositiveSmallIntegerField | 小正整型                                                     |
+| TextField                 | 大量的文本类型                                               |
+| UUIDField                 | 只能存储uuid格式的字符串。uuid是一个32位的全球唯一的字符串，一般用来做主键。 |
+| URLField                  | 字符串类型，在表单层面判断是否为URL格式                      |
+
+### 常用参数
+
+| 常用参数 |参数解释|
+|------|-|
+|null|默认是为False。如果设置为True，Django将会在映射表的时候指为可以为空。在使用字符串相关的`Field (CharField/TextField)`的时候，官方推荐尽量不要使用这个参数，也就是保持默认值False。因为Django在处 理字符串相关的Field的时候，即使这个Field的null=False，如果你没有给这个Field传递任何值，那么Django也会使用一个空的字符串`""`来作为默认值存储进去。因此如果再使用null=True，Django会产生两种空值的情形（NULL或者空字符串）。如果想要在表单验证的时候允许这个字符串为空，那么建议使用 blank=True。如果你的Field是BooleanField，那么对应的可空的字段则为NullBooleanField。|
+|blank|标识这个字段在表单验证的时候是否可以为空。默认是False。这个和null是有区别的，null是一个纯数据库级别的。而blank是表单验证级别的。|
+|db_column|这个字段在数据库中的名字。如果没有设置这个参数，那么将会使用模型中属性的名字。|
+|default|默认值。可以为一个值，或者是一个函数，但是不支持lambda表达式。并且不支持列表/字典/集合等可变的数据结构。|
+|primary_key|是否为主键。默认是false|
+|unique|在表中这个字段的值是否唯一。一般是手机号/邮箱等|
+
+更多请参考官方文档：https://docs.djangoproject.com/zh-hans/5.0/ref/models/fields/
+
+### 模型中`Meta`配置
+
+对于一些模型级别的配置。我们可以在模型中定义一个类，叫做Meta。然后在这个类中添加一些类属性来控制模型的作用。比如我们想要在数据库映射的时候使用自己指定的表名，而不是使用模型的名称。那么我们可以在Meta类中添加一个db_table的属性。示例代码如下：
+
+```python
+class Book(models.Model):
+    name = models.CharField(max_length=20,null=False)
+    desc =models.CharField(max_length=10o,name='description',db_column="description1")
+    class Meta:
+        db_table = 'book_model'
+```
+
+以下将对Meta类中的一些常用配置进行解释。
+
+#### db_table:
+
+这个模型映射到数据库中的表名。如果没有指定这个参数，那么在映射的时候将会使用模型名来作为默认的表名。
+
+#### ordering:
+
+设置在提取数据的排序方式。后面章节会讲到如何查找数据。比如我想在查找数据的时候根据添加的时间排序，那么示例代码如下：
+
+```python
+class Book(models.Model):
+    name = models.CharField(max_length=20,null=False)
+    desc =models.CharField(max_length=10o,name='description',db_column="description1")
+    pub_date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'book_model'
+        ordering = ['-pub_date', 'name']
+```
+
+详见官方文档：https://docs.djangoproject.com/zh-hans/5.0/ref/models/options/
+
+## 外键和表关系
