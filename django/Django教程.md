@@ -754,3 +754,185 @@ include标签寻找路径的方式。也是跟render渲染模板的函数是一�
 
    **注意：静态文件和媒体文件，最好都是通过Nginx等专业的web服务器来部署，以上方式仅在开发阶段使用。**
 
+# 数据库
+
+## 相关软件
+
+mysql下载[MySQL :: Download MySQL Community Server (Archived Versions)](https://downloads.mysql.com/archives/community/)
+
+[到底是谁还卸载不干净MySql呀！_mysql和mysql80两个服务-CSDN博客](https://blog.csdn.net/DRUN_K/article/details/135125606)
+
+### navicat
+
+### MySQL相关驱动
+
+MySQL-python
+
+mysqlclient
+
+pymysql
+
+MySQL Connector/Python
+
+## 数据库操作
+
+### 在settings.py中配置
+
+```python
+DATABASES = {
+    "default": {
+        # 数据库引擎
+        "ENGINE": "django.db.backends.mysql",
+        # 数据库名称
+        "NAME": "database_demo",
+        # 连接MySQL数据库的用户名
+        'USER': 'root',
+        # 连接MySQL数据库的密码
+        'PASSWORD': '123456',
+        # MySQL数据库的主机地址
+        'HOST': '127.0.0.1',
+        # MySQL数据库的端口号
+        'PORT': '3306',
+    }
+}
+```
+
+### 操作数据库
+
+#### 新建一个app为book
+
+报错
+
+```bash
+(D:\conda_envs\django) PS D:\PycharmProjects\template_demo> python manage.py startapp book
+Traceback (most recent call last):
+  File "D:\conda_envs\django\Lib\site-packages\django\db\backends\mysql\base.py", line 16, in <module>
+    import MySQLdb as Database
+ModuleNotFoundError: No module named 'MySQLdb'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\template_demo\manage.py", line 22, in <module>
+    main()
+  File "D:\PycharmProjects\template_demo\manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "D:\conda_envs\django\Lib\site-packages\django\core\management\__init__.py", line 442, in execute_from_command_line
+    utility.execute()
+  File "D:\conda_envs\django\Lib\site-packages\django\core\management\__init__.py", line 416, in execute
+    django.setup()
+  File "D:\conda_envs\django\Lib\site-packages\django\__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "D:\conda_envs\django\Lib\site-packages\django\apps\registry.py", line 116, in populate
+    app_config.import_models()
+  File "D:\conda_envs\django\Lib\site-packages\django\apps\config.py", line 269, in import_models
+    self.models_module = import_module(models_module_name)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\conda_envs\django\Lib\site-packages\django\contrib\auth\models.py", line 5, in <module>
+    from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+  File "D:\conda_envs\django\Lib\site-packages\django\contrib\auth\base_user.py", line 43, in <module>
+    class AbstractBaseUser(models.Model):
+  File "D:\conda_envs\django\Lib\site-packages\django\db\models\base.py", line 145, in __new__
+    new_class.add_to_class("_meta", Options(meta, app_label))
+  File "D:\conda_envs\django\Lib\site-packages\django\db\models\base.py", line 373, in add_to_class
+    value.contribute_to_class(cls, name)
+  File "D:\conda_envs\django\Lib\site-packages\django\db\models\options.py", line 238, in contribute_to_class
+    self.db_table, connection.ops.max_name_length()
+                   ^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\site-packages\django\utils\connection.py", line 15, in __getattr__
+    return getattr(self._connections[self._alias], item)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\site-packages\django\utils\connection.py", line 62, in __getitem__
+    conn = self.create_connection(alias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\site-packages\django\db\utils.py", line 193, in create_connection
+    backend = load_backend(db["ENGINE"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\site-packages\django\db\utils.py", line 113, in load_backend
+    return import_module("%s.base" % backend_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda_envs\django\Lib\site-packages\django\db\backends\mysql\base.py", line 18, in <module>
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.
+Did you install mysqlclient?
+```
+
+在settings.py的同目录下的`__init__.py`中写入
+
+```python
+import pymysql
+pymysql.install_as_MySQLdb()
+```
+
+重新新建app即可
+
+#### 在app中
+
+> book/views.py
+
+```python
+from django.shortcuts import render
+# 使用django封装好的connection对象，会自动读取settings.py中数据库的配置信息
+from django.db import connection
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+
+def book_list(request):
+    # 获取游标对象
+    cursor = connection.cursor()
+    # 拿到游标对象后执行sql语句
+    cursor.execute("select * from book")
+    # 获取所有的数据
+    book_list = cursor.fetchall()
+    for book in book_list:
+        print(book)
+    context = {
+        'book_list': book_list
+    }
+    return render(request, 'book_list.html', context=context)
+
+def book_info(request, book_id):
+    context = {
+        'book_id': book_id
+    }
+    return render(request, 'book_info.html', context=context)
+```
+
+### cursor对象常用接口
+
+PythonDBAPI下规范下cursor对象常用接口：
+
+[PEP 249 – Python Database API Specification v2.0 | peps.python.org](https://peps.python.org/pep-0249/#cursor-methods)
+
+1. description：如果cursor执行了查询的sql代码。那么读取`cursor.description`属性的时候，将返回一个列表，这个列表中装
+   的是元组，元组中装的分别是`(name,type_code,display_size,internal_size,precision,scale,null_ok)`，其中name代表的是查找出来的数据的字段名称，其他参数暂时用处不大。
+
+2. rowcount：代表的是在执行了sql语句后受影响的行数。
+
+3. close：关闭游标。关闭游标以后就再也不能使用了，否则会抛出异常。
+
+4. execute(sql[，parameters])：执行某个sql语句。如果在执行sql语句的时候还需要传递参数，那么可以传给parameters参数。示例代码如下：
+
+   ```python
+   cursor.execute("select * from article where id=%s",(1,))
+   ```
+
+5. fetchone：在执行了查询操作以后，获取第一条数据。
+
+6. fetchmany(size)：在执行查询操作以后，获取多条数据。具体是多少条要看传的size参数。如果不传size参数，那么默认是获取第一条数据。
+
+7. fetchall：获取所有满足sql语句的数据。
+
