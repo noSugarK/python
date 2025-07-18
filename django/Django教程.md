@@ -682,3 +682,75 @@ include标签寻找路径的方式。也是跟render渲染模板的函数是一�
 如果在某个block中需要使用父模版的内容，那么可以使用`{{ b1ock.super }}`来继承。比如上例，`{% b1ock title %}`，如果想要使用父模版的`title`，那么可以在子模版的`title block`中使用`{{ block.super }}`来实现。
 
 在定义block的时候，除了在block开始的地方定义这个b1ock的名字，还可以在block结束的时候定义名字。比如`{% block title %}{% endblock title %}`。这在大型模版中显得尤其有用，能让你快速的看到block包含在哪里。
+
+## 加载静态文件
+
+在一个网页中，不仅仅只有一个html骨架，还需要css样式文件，执行文件以及一些图片等。因此在DTL中加载静态文件是一个必须要解决的问题。在DTL中，使用`static`标签来加载静态文件。要使用static标签，首先需要`{% load static %}`。加载静态文件的步骤如下：
+
+1. 首先确保`django.contrib.staticfiles`已经添加到`settings.INSTALLED_APPS`中。
+
+2. 确保在`settings.py`中设置了`STATIC_URL`。比如：
+
+   ```
+   STATIC_URL = 'static/"
+   ```
+
+3. 在已经安装了的app下创建一个文件夹叫做static，然后再在这个static文件夹下创建一个当前app的名字的文件夹，再把静态文件放到这个文件夹下。例如你的app叫做book，有一个静态文件叫做`zhi1liao.Jpg`，那么路径为`book/static/book/zhiliao.Jpg`。（为什么在app下创建一个static文件夹，还需要在这个static下创建一个同app名字的文件夹呢？原因是如果直接把静态文件放在static文件夹下，那么在模版加载静态文件的时候就是使用`zhi1iao.jpg`，如果在多个app之间有同名的静态文件，这时候可能就会产生混淆。而在static文件夹下加了一个同名app文件夹，在模版中加载的时候就是使用`app/zhiliao.jpg`，这样就可以避免产生混淆。）
+
+4. 如果有一些静态文件是不和任何app挂钩的。那么可以在settings.py中添加STATICFILES_DIRS，以后DTL就会在这个列表的路径中查找静态文件。比如可以设置为：
+
+   ```python
+   STATICFILES_DIRS = [
+       BASE_DIR / "static"
+   ]
+   ```
+
+5. 在模板中使用load标签加载static标签。比如要加载在项目的static文件夹下的css文件夹中的index.css文件。示例代码如下：
+
+   ```html
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'css/index.css' %}">
+   ```
+
+6. 如果不想每次都在模板中加载静态文件都使用load加载static标签，可以在`settings.py`中的`TEMPLATES/OPTIONS`添加`'builtins' : ['django.templatetags.static']`，这样以后在模板中就可以直接使用`static`标签，不用手动load了。
+
+   ```python
+   TEMPLATES = [
+       {
+           "BACKEND": "django.template.backends.django.DjangoTemplates",
+           "DIRS": [BASE_DIR / "templates"],
+           "APP_DIRS": True,
+           "OPTIONS": {
+               "context_processors": [
+                   "django.template.context_processors.request",
+                   "django.contrib.auth.context_processors.auth",
+                   "django.contrib.messages.context_processors.messages",
+               ],
+               # 这里加载
+               'builtins' : ['django.templatetags.static']
+           },
+       },
+   ]
+   ```
+
+7. 如果没有在settings.INSTALLED_APPS中添加django.contrib.staticfiles。那么我们就需要手动的将请求静态文件的url与静态文件的路径进行映射了，这个操作通常用来加载媒体文件（上传的文件）。示例代码如下：
+
+   ```python
+   from django.conf import settings
+   from django.conf.urls.static import static
+   
+   urlpatterns = [
+   	path('admin/', admin.site.urls),
+   	...
+   ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+   ```
+
+   在settings.py中的对MEDIA_URL和MEDIA_ROOT的配置如下：
+
+   ```python
+   MEDIA_ROOT = BASE_DIR / 'media'
+   MEDIA_URL= '/media/'
+   ```
+
+   **注意：静态文件和媒体文件，最好都是通过Nginx等专业的web服务器来部署，以上方式仅在开发阶段使用。**
+
