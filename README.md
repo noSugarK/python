@@ -57,33 +57,32 @@ mysql > 8.0.21
 #### [数据库操作](django/Django教程.md#数据库操作)
 
 1. [数据库配置](django/Django教程.md#在settingspy中配置)
-
 2. [获取数据库信息](django/Django教程.md#在app中获取数据库信息)
 
 #### [ORM模型](django/Django教程.md#ORM模型)
 
 1. [创建ORM模型](django/Django教程.md#创建ORM模型)
-
 2. [数据库迁移](django/Django教程.md#映射模型到数据库中)
-
 3. [基本CRUD操作](django/Django教程.md#ORM模型实现基本CRUD操作)
 
-   - [增](django/Django教程.md#添加一个模型到数)
-   [查](django/Django教程.md#查找数据)
-   [改](django/Django教程.md#修改数据)
-   [删](django/Django教程.md#删除数据)
+   [增](django/Django教程.md#添加一个模型到数)、
+   [查](django/Django教程.md#查找数据)、
+   [改](django/Django教程.md#修改数据)、
+   [删](django/Django教程.md#删除数据)、
    [排序](django/Django教程.md#数据排序)
 
 #### [常用Field和参数](django/Django教程.md#常用field和参数)
 
 1. [数据库字段类型](django/Django教程.md#数据库字段类型)
-
 2. [常用参数](django/Django教程.md#常用参数)
-
 3. [模型中Meta配置](django/Django教程.md#模型中Meta配置)
 
 #### [外键和表关系](django/Django教程.md#外键和表关系)
 
 1. [外键](django/Django教程.md#外键)
-
 2. [外键删除操作](django/Django教程.md#外键删除操作)
+3. [表关系](django/Django教程.md#表关系)
+
+   [一对多](django/Django教程.md#一对多)、
+   [一对一](django/Django教程.md#一对一)、
+   [多对多](django/Django教程.md#多对多)

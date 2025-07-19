@@ -1217,3 +1217,89 @@ class Comment(models.Model):
 
 **以上这些选项只是Django级别的，数据级别依旧是RESTRICT！**
 
+### 表关系
+
+表之间的关系都是通过外键来进行关联的。而表之间的关系，无非就是三种关系：一对一、一对多（多对一）、多对多等。以下将讨论一下三种关系的应用场景及其实现方式。
+
+#### 一对多
+
+##### 应用场景
+
+比如文章和作者之间的关系。一个文章只能由一个作者编写，但是一个作者可以写多篇文章。文章和作者之间的关系就是典型的多对一的关系。
+
+##### 实现方式
+
+一对多或者多对一，都是通过`ForeignKey`来实现的。还是以文章和作者的案例进行讲解。
+
+```python
+class User(models.Model):
+	username = models.CharField(max_length=20)
+	password = models.CharField(max_length=100)
+    
+class Article(models.Model):
+	title = models.CharField(max_length=100)
+	content = models.TextField()
+	author = models.ForeignKey("User",on_delete=models.CASCADE)
+```
+
+那么以后在给Article对象指定author，就可以使用以下代码来完成：
+
+```python
+article = Article(title='abc',content='123')
+author = User(username='zhiliao',password='111l11')
+#要先保存到数据库中
+author.save()
+article.author = author
+article.save()
+```
+
+并且以后如果想要获取某个用户下的所有文章，可以通过`article_set`来实现。
+
+```python
+user = User.objects.get(id='zhangsan')
+articles = user.article_set.all()
+```
+
+#### 一对一
+
+##### 应用场景
+
+比如一个用户表和一个用户信息表。在实际网站中，可能需要保存用户的许多信息，但是有些信息是不经常用的。如果把所有信息都存放到一张表中可能会影响查询效率，因此可以把用户的一些不常用的信息存放到另外一张表中我们叫做userExtension。但是用户表user和用户信息表userExtension就是典型的—对一了。
+
+##### 实现方式
+
+Django为一对一提供了一个专门的Field叫做`OneToOneField`来实现一对一操作。示例代码如下:
+
+```python
+class User(models.Model):
+	username = models.CharField(max_length=20)
+	password = models.CharField(max_length=100)
+class UserExtension(models.Model):
+	birthday = models.DateTimeField(null=True)
+	school = models.CharField(blank=True,max_length=50)
+	user = models.OneToOneField("User", on_delete=models.CASCADE)
+```
+
+在`UserExtension`模型上增加了一个一对一的关系映射。其实底层是在`UserExtension`这个表上增加了一个user_id，来和user进行关联，并且这个外键数据在表中必须是唯一的，来保证一对一。
+
+#### 多对多
+
+##### 应用场景
+
+比如文章和标签的关系。一篇文章可以有多个标签，一个标签可以被多个文章所引用。因此标签和文章的关系是典型的多对多的关系。
+
+##### 实现方式
+
+Django为这种多对多的实现提供了专门的Fie1d。叫做`ManyToManyField`。还是拿文章和标签为例进行讲解。示例代码如下：
+
+```python
+class Article(models.Model):
+	title = models.CharField(max_length=100)
+	content = models.TextField()
+	tags = models.ManyToManyField("Tag",related_name="articles")
+    
+class Tag(models.Model):
+	name = models.CharField(max_length=50)
+```
+
+在数据库层面，实际上Django是为这种多对多的关系建立了一个中间表。这个中间表分别定义了两个外键，引用到article和tag两张表的主键。
