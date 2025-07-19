@@ -974,9 +974,9 @@ class Book(models.Model):
    python manage.py migrate
    ```
 
-### ORM实现基本CRUD操作
+## 基本CRUD操作
 
-#### 添加一个模型到数
+### 添加一个模型到数
 首先需要创建一个模型。创建方法和创建普通python对象是一样的。在创建完模型后需要调用模型的save方法，这样Django会自动将这个模型转换成sql语句，然后存储到数据库中。
 
 ```python
@@ -997,11 +997,11 @@ def add_book(request):
     return HttpResponse('添加成功')
 ```
 
-#### 查找数据
+### 查找数据
 
 查找数据都是通过模型下的objects对象来实现的。
 
-##### 查找所有数据
+#### 查找所有数据
 
 查找Book这个模型对应的表下的所有数据。
 
@@ -1009,7 +1009,7 @@ def add_book(request):
 books = Book.objects.all()
 ```
 
-##### 数据过滤
+#### 数据过滤
 
 在查找数据的时候，可以通过调用objects的filter方法进行数据过滤。
 
@@ -1022,7 +1022,7 @@ books = Book.objects.filter(name="三国演义",desc='test')
 
 调用filter，会将所有满足条件的模型对象都返回。
 
-##### 获取单个对象
+#### 获取单个对象
 
 如果只需要返回第一个满足条件的对象，可以使用get方法。
 
@@ -1041,7 +1041,7 @@ def book_info(request, book_id):
 
 如果没有找到满足条件的对象会抛出一个异常，而filter则是返回一个空列表。
 
-#### 数据排序
+### 数据排序
 
 如果想在查找数据的时候使用某个字段来进行排序，可以使用order_by方法来实现。
 
@@ -1055,7 +1055,7 @@ books = Book.objects.order_by('publish_date')
 books = Book.objects.order_by('-publish_date')
 ```
 
-#### 修改数据
+### 修改数据
 
 ```python
 def update_book(request):
@@ -1066,7 +1066,7 @@ def update_book(request):
     return HttpResponse('更新成功')
 ```
 
-#### 删除数据
+### 删除数据
 
 查找到数据即可调用delete方法进行删除
 
@@ -1303,3 +1303,5 @@ class Tag(models.Model):
 ```
 
 在数据库层面，实际上Django是为这种多对多的关系建立了一个中间表。这个中间表分别定义了两个外键，引用到article和tag两张表的主键。
+
+## 查询操作
