@@ -1,6 +1,4 @@
-# 语法与基础学习
-
-## 基础部分
+## 语法基础部分
 
 - [数字](语法与基础模块/数字-Number.ipynb)
 - [字符串](语法与基础模块/字符串-String.ipynb)
@@ -8,7 +6,7 @@
 - [集合](语法与基础模块/集合-set.ipynb)
 - [基础函数](语法与基础模块/基础函数.ipynb)
 
-## 相关模块
+## 基础模块
 
 - [operator](语法与基础模块/operator模块.ipynb)
 - [heapq](语法与基础模块/堆-heapq模块.ipynb)
@@ -16,7 +14,9 @@
 - [re](语法与基础模块/正则表达式-re模块.ipynb)
 - [time](语法与基础模块/日期与时间-time模块.ipynb)
 
-# Django框架
+<h1>Django框架</h1>
+<details>
+<summary>展开详情</summary>
 
 ## [Django教程](django/Django教程.md)
 
@@ -36,17 +36,18 @@ django > 5.0
 ### 模版
 
 #### [模版介绍](django/Django教程.md#模版介绍)
+
 - [模版渲染](django/Django教程.md#模版渲染)
 - [模板查找路径配置](django/Django教程.md#模板查找路径配置)
 
 #### [DTL模版语法](django/Django教程.md#DTL模版语法)
 
-| 标签                                          | 内容                                                         |
-| --------------------------------------------- | ------------------------------------------------------------ |
-| [变量](django/Django教程.md#变量)             |                                                              |
-| [常用标签](django/Django教程.md#常用标签)     | [if标签](django/Django教程.md#if标签)<br>[for标签](django/Django教程.md#for标签)<br>[with标签](django/Django教程.md#with标签)<br>[url标签](django/Django教程.md#url标签)<br> |
-| [常用过滤器](django/Django教程.md#常用过滤器) | [add](django/Django教程.md#add) [cut](django/Django教程.md#cut) [default](django/Django教程.md#default) [default_if_none](django/Django教程.md#default_if_none) [date](django/Django教程.md#date) <br>[first](django/Django教程.md#first) [last](django/Django教程.md#last) [length](django/Django教程.md#length) [lower](django/Django教程.md#lower) [upper](django/Django教程.md#upper) <br>[join](django/Django教程.md#join) [floatformat](django/Django教程.md#floatformat) [random](django/Django教程.md#random) [slice](django/Django教程.md#slice) [safe](django/Django教程.md#safe)<br> [striptags](django/Django教程.md#striptags) [truncatechars](django/Django教程.md#truncatechars) [truncatechars_html](django/Django教程.md#truncatechars_html)<br> |
-| [模板结构](django/Django教程.md#模板结构)     | [include模板](django/Django教程.md#include模板)<br>[模板继承](django/Django教程.md#模板继承)<br> |
+| 标签                                       | 内容                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [变量](django/Django教程.md#变量)             |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [常用标签](django/Django教程.md#常用标签)     | [if标签](django/Django教程.md#if标签)`<br>`[for标签](django/Django教程.md#for标签)`<br>`[with标签](django/Django教程.md#with标签)`<br>`[url标签](django/Django教程.md#url标签)`<br>`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [常用过滤器](django/Django教程.md#常用过滤器) | [add](django/Django教程.md#add) [cut](django/Django教程.md#cut) [default](django/Django教程.md#default) [default_if_none](django/Django教程.md#default_if_none) [date](django/Django教程.md#date) `<br>`[first](django/Django教程.md#first) [last](django/Django教程.md#last) [length](django/Django教程.md#length) [lower](django/Django教程.md#lower) [upper](django/Django教程.md#upper) `<br>`[join](django/Django教程.md#join) [floatformat](django/Django教程.md#floatformat) [random](django/Django教程.md#random) [slice](django/Django教程.md#slice) [safe](django/Django教程.md#safe)`<br>` [striptags](django/Django教程.md#striptags) [truncatechars](django/Django教程.md#truncatechars) [truncatechars_html](django/Django教程.md#truncatechars_html)`<br>` |
+| [模板结构](django/Django教程.md#模板结构)     | [include模板](django/Django教程.md#include模板)`<br>`[模板继承](django/Django教程.md#模板继承)`<br>`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### 数据库
 
@@ -87,3 +88,14 @@ mysql > 8.0.21
    [一对多](django/Django教程.md#一对多)、
    [一对一](django/Django教程.md#一对一)、
    [多对多](django/Django教程.md#多对多)
+
+
+</details>
+
+## 应用程序打包
+
+[Nuitka](/打包为可执行文件/Nuitka.ipynb)
+
+[PyInstaller](/打包为可执行文件/PyInstaller.ipynb)
+
+[liunx下打包为deb](/打包为可执行文件/liunx下打包为deb.md)
