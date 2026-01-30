@@ -18,11 +18,11 @@
 
 # 应用程序打包
 
-[Nuitka](/打包为可执行文件/Nuitka.ipynb)
+[Nuitka](/打包为可执行文件/Nuitka.md)
 
-[PyInstaller](/打包为可执行文件/PyInstaller.ipynb)
+[PyInstaller](/打包为可执行文件/PyInstaller.md)
 
-[liunx下打包为deb](/打包为可执行文件/liunx下打包为deb.md)
+[liunx下打包为deb](/打包为可执行文件/linux下打包为deb.md)
 
 # Django框架
 
