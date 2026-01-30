@@ -293,8 +293,8 @@ def profile(request):
 遍历字典
 
 ```html
-{% for key,value in person.items %}
-    <p>{{ key }}:{{ value }}</p>
+{% for kv in person.items %}
+  <p>{{ kv[0] }}: {{ kv[1] }}</p>
 {% endfor %}
 ```
 
