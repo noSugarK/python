@@ -683,8 +683,6 @@ include标签寻找路径的方式。也是跟render渲染模板的函数是一�
 
 在定义block的时候，除了在block开始的地方定义这个b1ock的名字，还可以在block结束的时候定义名字。比如`{% block title %}{% endblock title %}`。这在大型模版中显得尤其有用，能让你快速的看到block包含在哪里。
 
-{% endraw %}
-
 ## 加载静态文件
 
 在一个网页中，不仅仅只有一个html骨架，还需要css样式文件，执行文件以及一些图片等。因此在DTL中加载静态文件是一个必须要解决的问题。在DTL中，使用`static`标签来加载静态文件。要使用static标签，首先需要`{% load static %}`。加载静态文件的步骤如下：
@@ -1305,5 +1303,7 @@ class Tag(models.Model):
 ```
 
 在数据库层面，实际上Django是为这种多对多的关系建立了一个中间表。这个中间表分别定义了两个外键，引用到article和tag两张表的主键。
+
+{% endraw %}
 
 ## 查询操作
