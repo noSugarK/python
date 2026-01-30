@@ -1,3 +1,5 @@
+# 语法和基础
+
 ## 语法基础部分
 
 - [数字](语法与基础模块/数字-Number.ipynb)
@@ -14,9 +16,15 @@
 - [re](语法与基础模块/正则表达式-re模块.ipynb)
 - [time](语法与基础模块/日期与时间-time模块.ipynb)
 
-<h1>Django框架</h1>
-<details>
-<summary>展开详情</summary>
+# 应用程序打包
+
+[Nuitka](/打包为可执行文件/Nuitka.ipynb)
+
+[PyInstaller](/打包为可执行文件/PyInstaller.ipynb)
+
+[liunx下打包为deb](/打包为可执行文件/liunx下打包为deb.md)
+
+# Django框架
 
 ## [Django教程](django/Django教程.md)
 
@@ -89,13 +97,3 @@ mysql > 8.0.21
    [一对一](django/Django教程.md#一对一)、
    [多对多](django/Django教程.md#多对多)
 
-
-</details>
-
-## 应用程序打包
-
-[Nuitka](/打包为可执行文件/Nuitka.ipynb)
-
-[PyInstaller](/打包为可执行文件/PyInstaller.ipynb)
-
-[liunx下打包为deb](/打包为可执行文件/liunx下打包为deb.md)
