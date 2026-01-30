@@ -282,44 +282,6 @@ def profile(request):
 {% endfor %}
 ```
 
-如果需要反向遍历，则需加上reversed
-
-```
-{% for person in persons | reversed %}
-	<p>{{ person.name }}</p>
-{% endfor %}
-```
-
-遍历字典
-
-```html
-{% for kv in person.items %}
-  <p>{{ kv[0] }}: {{ kv[1] }}</p>
-{% endfor %}
-```
-
-在for循环中，DTL提供了一些变量可供使用。这些变量如下：
-
-- forloop.counter：当前循环的下标。以1作为起始值。
-- forloop.countero：当前循环的下标。以o作为起始值。
-- forloop.revcounter：当前循环的反向下标值。比如列表有5个元素，那么第一次遍历这个属性是等于5，第二次是4，以此类推。并且是以1作为最后一个元素的下标。
-- forloop.revcountero：类似于forloop.revcounter。不同的是最后一个元素的下标是从0开始。
-- forloop.first：是否是第一次遍历。
-- forloop.last：是否是最后一次遍历。
-- forloop.parentloop：如果有多个循环嵌套，那么这个属性代表的是上一级的for循环。
-
-#### for...in...empty标签
-
-和for标签一样，只是当遍历的对象没有元素时输出empty中的内容
-
-```html
-{% for person in persons %}
-	<p>{{ person.name }}</p>
-{% empty %}
-	没有任何人
-{% endfor %}
-```
-
 #### with标签
 
 在模板中定义变量。可以将复杂的变量缓存到一个变量上，后面可以直接使用这个变量。
