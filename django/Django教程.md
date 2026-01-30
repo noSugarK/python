@@ -285,7 +285,7 @@ def profile(request):
 如果需要反向遍历，则需加上reversed
 
 ```
-{% for person in persons reversed %}
+{% for person in persons | reversed %}
 	<p>{{ person.name }}</p>
 {% endfor %}
 ```
