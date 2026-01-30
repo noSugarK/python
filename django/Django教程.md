@@ -271,7 +271,7 @@ def profile(request):
 	未成年
 {% endif %}
 ```
-
+{% raw %}
 #### for标签
 
 遍历列表
@@ -279,6 +279,44 @@ def profile(request):
 ```html
 {% for person in persons %}
 	<p>{{ person.name }}</p>
+{% endfor %}
+```
+
+如果需要反向遍历，则需加上reversed
+
+```
+{% for person in persons reversed %}
+	<p>{{ person.name }}</p>
+{% endfor %}
+```
+
+遍历字典
+
+```html
+{% for key,value in person.items %}
+    <p>{{ key }}:{{ value }}</p>
+{% endfor %}
+```
+
+在for循环中，DTL提供了一些变量可供使用。这些变量如下：
+
+- forloop.counter：当前循环的下标。以1作为起始值。
+- forloop.countero：当前循环的下标。以o作为起始值。
+- forloop.revcounter：当前循环的反向下标值。比如列表有5个元素，那么第一次遍历这个属性是等于5，第二次是4，以此类推。并且是以1作为最后一个元素的下标。
+- forloop.revcountero：类似于forloop.revcounter。不同的是最后一个元素的下标是从0开始。
+- forloop.first：是否是第一次遍历。
+- forloop.last：是否是最后一次遍历。
+- forloop.parentloop：如果有多个循环嵌套，那么这个属性代表的是上一级的for循环。
+
+#### for...in...empty标签
+
+和for标签一样，只是当遍历的对象没有元素时输出empty中的内容
+
+```html
+{% for person in persons %}
+	<p>{{ person.name }}</p>
+{% empty %}
+	没有任何人
 {% endfor %}
 ```
 
@@ -644,6 +682,8 @@ include标签寻找路径的方式。也是跟render渲染模板的函数是一�
 如果在某个block中需要使用父模版的内容，那么可以使用`{{ b1ock.super }}`来继承。比如上例，`{% b1ock title %}`，如果想要使用父模版的`title`，那么可以在子模版的`title block`中使用`{{ block.super }}`来实现。
 
 在定义block的时候，除了在block开始的地方定义这个b1ock的名字，还可以在block结束的时候定义名字。比如`{% block title %}{% endblock title %}`。这在大型模版中显得尤其有用，能让你快速的看到block包含在哪里。
+
+{% endraw %}
 
 ## 加载静态文件
 
