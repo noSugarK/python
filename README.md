@@ -16,7 +16,18 @@
 - [re](语法与基础模块/正则表达式-re模块.ipynb)
 - [time](语法与基础模块/日期与时间-time模块.ipynb)
 
-# 应用程序打包
+# 桌面程序开发
+
+## GUI
+
+> ~~PyQt6 由于开源协议问题不选择~~ 
+
+### [PySide6](/GUI/PySide6.md)
+
+相关工具配置：[designer](/GUI/designer.md)
+
+
+## 应用程序打包
 
 [Nuitka](/打包为可执行文件/Nuitka.md)
 
@@ -24,7 +35,7 @@
 
 [liunx下打包为deb](/打包为可执行文件/linux下打包为deb.md)
 
-# Django框架
+# web开发 - Django框架
 
 ## [Django教程](django/Django教程.md)
 
