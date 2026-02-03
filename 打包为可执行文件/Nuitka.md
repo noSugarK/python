@@ -6,6 +6,8 @@
 
 ### 创建虚拟环境
 
+> [!TIP] 
+>
 > Nuitka 当前版本（2.8.9）在 Windows 上不支持用 MinGW64 编译 Python 3.13 的程序！
 
 ```bash
@@ -58,4 +60,6 @@ pip install -r requirements.txt
 
 # 示例
 
+```bash
 nuitka --mingw64 --show-progress --standalone --disable-console --enable-plugin=pyside6 --plugin-enable=numpy --onefile --remove-output camera.py
+```
