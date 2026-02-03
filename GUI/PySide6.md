@@ -31,6 +31,7 @@ if __name__ =='__main__':
 
     # 欢迎界面
     pixmap = QPixmap('images/images/Python-code.jpg')
+    pix = pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
     splash = QSplashScreen(pixmap)
     splash.show()
     app.processEvents()
