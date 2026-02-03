@@ -35,6 +35,8 @@
 
 [PyInstaller](/打包为可执行文件/PyInstaller.md)
 
+[cx_Freeze](/打包为可执行文件/cx_Freeze.md)
+
 [liunx下打包为deb](/打包为可执行文件/linux下打包为deb.md)
 
 # web开发 - Django框架
