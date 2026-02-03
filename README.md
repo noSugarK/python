@@ -26,6 +26,8 @@
 
 相关工具配置：[designer](/GUI/designer.md)
 
+现代化GUI美化模版 - [PyDracula](/GUI/PyDracula.md)
+
 
 ## 应用程序打包
 
